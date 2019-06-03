@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import store, 
+{ UPDATE_RECIPE_NAME, UPDATE_RECIPE_CATEGORY,
+  UPDATE_FIRST_NAME, UPDATE_LAST_NAME } from '../../store'
 import "./Name.css";
 
 class Name extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      category: ''
+      name: store.getState().recipeName,
+      category: store.getState().recipeCategory,
+      firstName: store.getState().authorFirstName,
+      lastName: store.getState().authorLastName
     };
   }
   handleNameChange(nameVal) {
@@ -22,7 +27,23 @@ class Name extends Component {
     });
   }
   saveChanges() {
-    // Send data to Redux state
+    let { name, category, firstName, lastName } = this.state
+    store.dispatch({
+      type: UPDATE_RECIPE_NAME,
+      payload: name
+    })
+    store.dispatch({
+      type: UPDATE_RECIPE_CATEGORY,
+      payload: category
+    })
+    store.dispatch({
+      type: UPDATE_FIRST_NAME,
+      payload: firstName
+    })
+    store.dispatch({
+      type: UPDATE_LAST_NAME,
+      payload: lastName
+    })
   }
   render() {
     return (

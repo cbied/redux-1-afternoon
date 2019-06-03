@@ -1,13 +1,23 @@
 import React, { Component } from "react";
+import store, { UPDATE_INGREDIENTS_LIST } from '../../store'
 import { Link } from "react-router-dom";
 
 class Ingredients extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingredients: [],
+      ingredients: store.getState().ingredientsList,
       input: ""
     };
+  }
+
+  componentDidMount() {
+    let { ingredientsList } = store.getState()
+    store.subscribe(() => {
+      this.setState({
+        ingredients: ingredientsList
+      })
+    })
   }
   handleChange(val) {
     this.setState({
@@ -15,12 +25,18 @@ class Ingredients extends Component {
     });
   }
   addIngredient() {
-    // Send data to Redux state
+    let { input } = this.state
+    store.dispatch({
+      type: UPDATE_INGREDIENTS_LIST,
+      payload: input
+    })
     this.setState({
       input: ""
     });
   }
   render() {
+  console.log(this.state.ingredients)
+  console.log(store.getState().ingredientsList)
     const ingredients = this.state.ingredients.map((ingredient, i) => {
       return <li key={i}>{ingredient}</li>;
     });
